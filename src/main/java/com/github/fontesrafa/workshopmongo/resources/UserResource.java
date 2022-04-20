@@ -3,8 +3,10 @@ package com.github.fontesrafa.workshopmongo.resources;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.github.fontesrafa.workshopmongo.domain.User;
+import com.github.fontesrafa.workshopmongo.dto.UserDTO;
 import com.github.fontesrafa.workshopmongo.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,9 @@ public class UserResource {
     private UserService userService;
     
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<List<UserDTO>> findAll() {
         List<User> list = userService.findAll();
-        return ResponseEntity.ok().body(list);
+        List<UserDTO> listDTO = list.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
     }
 }
