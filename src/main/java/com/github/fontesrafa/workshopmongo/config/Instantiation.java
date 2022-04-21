@@ -7,6 +7,7 @@ import java.util.TimeZone;
 import com.github.fontesrafa.workshopmongo.domain.Post;
 import com.github.fontesrafa.workshopmongo.domain.User;
 import com.github.fontesrafa.workshopmongo.dto.AuthorDTO;
+import com.github.fontesrafa.workshopmongo.dto.CommentDTO;
 import com.github.fontesrafa.workshopmongo.repositories.PostRepository;
 import com.github.fontesrafa.workshopmongo.repositories.UserRepository;
 
@@ -40,7 +41,14 @@ public class Instantiation implements CommandLineRunner{
 
         Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu viagem!", "Vou viajar pro Maranhão, abraços", new AuthorDTO(maria));
         Post post2 = new Post(null, sdf.parse("23/03/2018"), "Cheguei!", "Cheguei de viagem, deu tudo certo!", new AuthorDTO(maria));
+        
+        CommentDTO c1 = new CommentDTO("Boa viagem mana!", sdf.parse("21/03/2018"), new AuthorDTO(alex));
+        CommentDTO c2 = new CommentDTO("Aproveite!", sdf.parse("22/03/2018"), new AuthorDTO(joao));
+        CommentDTO c3 = new CommentDTO("Have a good day!", sdf.parse("23/03/2018"), new AuthorDTO(alex));
 
+        post1.getComments().addAll(Arrays.asList(c1, c2));
+        post2.getComments().addAll(Arrays.asList(c3));
+        
         postRepository.saveAll(Arrays.asList(post1, post2));
 
         maria.getPosts().addAll(Arrays.asList(post1, post2));
