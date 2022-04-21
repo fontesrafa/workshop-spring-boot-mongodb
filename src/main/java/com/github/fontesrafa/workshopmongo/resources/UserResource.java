@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.github.fontesrafa.workshopmongo.domain.Post;
 import com.github.fontesrafa.workshopmongo.domain.User;
 import com.github.fontesrafa.workshopmongo.dto.UserDTO;
 import com.github.fontesrafa.workshopmongo.services.UserService;
@@ -57,7 +58,7 @@ public class UserResource {
     public ResponseEntity<UserDTO> update(@RequestBody UserDTO userDTO, @PathVariable String id) {
         User user = userService.fromDTO(userDTO);
         user.setId(id);
-        user = userService.update(user);
+        userService.update(user);
         return ResponseEntity.noContent().build();
     }
 
@@ -65,5 +66,11 @@ public class UserResource {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value="/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User user = userService.findById(id);        
+        return ResponseEntity.ok().body(user.getPosts());
     }
 }
