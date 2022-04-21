@@ -1,6 +1,7 @@
 package com.github.fontesrafa.workshopmongo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.github.fontesrafa.workshopmongo.domain.User;
 import com.github.fontesrafa.workshopmongo.dto.UserDTO;
@@ -29,6 +30,12 @@ public class UserService {
         return userRepository.insert(obj);
     }
 
+    public User update(User obj) {
+        User newObj = findById(obj.getId());
+        updateData(newObj, obj);
+        return userRepository.save(newObj);
+    }    
+
     public void delete(String id) {
         findById(id);
         userRepository.deleteById(id);
@@ -36,6 +43,11 @@ public class UserService {
 
     public User fromDTO(UserDTO userDTO) {
         return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail());
+    }
+
+    private void updateData(User newObj, User obj) {
+        newObj.setName(obj.getName());
+        newObj.setEmail(obj.getEmail());
     }
 
 }
